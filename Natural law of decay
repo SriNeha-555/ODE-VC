@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the differential equation for Newton's Law of Decay
+def newtons_law_of_decay(N, t, k):
+    dNdt = -k * N
+    return dNdt
+
+# Solve the differential equation using Euler's method
+def euler_method(func, initial_condition, t_values, *args):
+    N_values = [initial_condition]
+    dt = t_values[1] - t_values[0]
+
+    for i in range(1, len(t_values)):
+        N = N_values[-1]
+        dNdt = func(N, t_values[i-1], *args)
+        N_new = N + dNdt * dt
+        N_values.append(N_new)
+
+    return np.array(N_values)
+
+# Parameters
+N_initial = 1000  # Initial quantity
+k = 0.1           # Decay rate
+t_values = np.linspace(0, 10, 100)  # Time values for evaluation
+
+# Solve the differential equation
+N_values = euler_method(newtons_law_of_decay, N_initial, t_values, k)
+
+# Plot the results
+plt.plot(t_values, N_values, label='Quantity')
+plt.title("Newton's Law of Decay")
+plt.xlabel('Time')
+plt.ylabel('Quantity')
+plt.legend()
+plt.grid(True)
+plt.show()
